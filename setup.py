@@ -4,10 +4,6 @@ from setuptools import setup, find_packages
 __version__ = '0.1'
 
 
-with open('requirements.txt') as f:
-    requires = f.read().splitlines()
-
-
 url = 'https://github.com/skarrok/django-liqpay'
 
 
@@ -24,5 +20,5 @@ setup(
     packages=find_packages(),
     include_package_data=True,
     license='GPLv3',
-    install_requires=requires
+    install_requires=['django'],
 )
