@@ -4,5 +4,5 @@ from . import views
 app_name = 'djliqpay'
 
 urlpatterns = [
-    path('callback/', views.liqpay_callback, name='djliqpay-callback'),
+    path('callback/', views.liqpay_callback, name='callback'),
 ]

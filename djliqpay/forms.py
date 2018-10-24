@@ -1,4 +1,5 @@
 from copy import deepcopy
+from urllib.parse import urljoin
 
 from django import forms
 from django.urls import reverse
@@ -17,9 +18,11 @@ class CheckoutForm(CallbackForm):
 
     def __init__(self, params, *args, **kwargs):
         self.params = {} if params is None else deepcopy(params)
-        self.liqpay = LiqPay(settings.LIQPAY_PUBLIC_KEY, settings.LIQPAY_PRIVATE_KEY)
+        self.liqpay = LiqPay(settings.LIQPAY_PUBLIC_KEY,
+                             settings.LIQPAY_PRIVATE_KEY)
+        self.action_url = urljoin(self.liqpay._host, '3/checkout/')
         self.params.update(
-            server_url=reverse('djliqpay-callback'),
+            server_url=reverse('djliqpay:callback'),
             version=constants.API_VERSION,
             sandbox=str(
                 int(bool(params.get('sandbox', settings.LIQPAY_SANDBOX)))),
