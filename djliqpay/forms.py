@@ -20,7 +20,7 @@ class CheckoutForm(CallbackForm):
         self.params = {} if params is None else deepcopy(params)
         self.liqpay = LiqPay(settings.LIQPAY_PUBLIC_KEY,
                              settings.LIQPAY_PRIVATE_KEY)
-        self.action_url = urljoin(self.liqpay._host, '3/checkout/')
+        self.action_url = urljoin(self.liqpay._host, constants.CHECKOUT_URL)
         self.params.update(
             server_url=reverse('djliqpay:callback'),
             version=constants.API_VERSION,

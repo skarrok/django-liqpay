@@ -29,3 +29,4 @@ CURRENCIES = (
 )
 
 API_VERSION = '3'
+CHECKOUT_URL = '3/checkout/'
