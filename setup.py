@@ -20,5 +20,10 @@ setup(
     packages=find_packages(),
     include_package_data=True,
     license='GPLv3',
-    install_requires=['django'],
+    install_requires=[
+        'liqpay',
+    ],
+    dependency_links=[
+        'git+https://github.com/liqpay/sdk-python@f3a81847f2b518c3936461880e0451eb02f33b25#egg=liqpay',
+    ],
 )
