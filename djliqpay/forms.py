@@ -22,7 +22,6 @@ class CheckoutForm(CallbackForm):
                              settings.LIQPAY_PRIVATE_KEY)
         self.action_url = urljoin(self.liqpay._host, constants.CHECKOUT_URL)
         self.params.update(
-            server_url=reverse('djliqpay:callback'),
             version=constants.API_VERSION,
             sandbox=str(
                 int(bool(params.get('sandbox', settings.LIQPAY_SANDBOX)))),
