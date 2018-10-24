@@ -2,7 +2,6 @@ from copy import deepcopy
 from urllib.parse import urljoin
 
 from django import forms
-from django.urls import reverse
 from liqpay import LiqPay
 
 from . import constants, settings
