@@ -21,9 +21,9 @@ setup(
     include_package_data=True,
     license='GPLv3',
     install_requires=[
-        'liqpay',
+        'liqpay-python',
     ],
     dependency_links=[
-        'git+https://github.com/liqpay/sdk-python@f3a81847f2b518c3936461880e0451eb02f33b25#egg=liqpay',
+        'git+https://github.com/liqpay/sdk-python@f3a81847f2b518c3936461880e0451eb02f33b25#egg=liqpay-python-2.0',
     ],
 )
