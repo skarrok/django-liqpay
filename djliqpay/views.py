@@ -1,3 +1,5 @@
+import logging
+
 from django.http import HttpResponse
 from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.http import require_POST
@@ -8,6 +10,8 @@ from .forms import CallbackForm
 from .models import LiqPayOrder
 from .signals import result_received
 
+logger = logging.getLogger('liqpay')
+
 
 @csrf_exempt
 @require_POST
@@ -15,6 +19,7 @@ def liqpay_callback(request):
 
     form = CallbackForm(request.POST or None)
     if not form.is_valid():
+        logger.info('Invalid callback form, POST: {}'.format(request.POST))
         return HttpResponse(status=400)
 
     data = form.cleaned_data['data']
@@ -25,18 +30,29 @@ def liqpay_callback(request):
                                   settings.PRIVATE_KEY)
 
     if signature != our_sign:
+        logger.info('Invalid signature: our {}!={}'.format(
+            our_sign, signature))
         return HttpResponse(status=400)
 
     data = liqpay.decode_data_from_str(data)
 
-    status = data['status']
+    status = data.get('status')
     if status != 'success':
+        logger.info('Status: {} {} {}'.format(status, data.get('err_code'),
+                                              data.get('err_description')))
         return HttpResponse(status=400)
 
     try:
         order = LiqPayOrder.objects.get(order_id=data['order_id'])
     except LiqPayOrder.DoesNotExist:
+        logger.info('Wrong order_id: {}'.format(data['order_id']))
         return HttpResponse(status=400)
+
+    logger.info('Payment success: id={} amount={} {}'.format(
+        order.id,
+        data['amount'],
+        data['currency']
+    ))
 
     result_received.send(
         sender=order,
