@@ -51,14 +51,14 @@ def liqpay_callback(request):
 
     logger.info('Payment status={}: id={} amount={} {}'.format(
         status,
-        order.id,
+        order.order_id,
         data['amount'],
         data['currency']
     ))
 
     result_received.send(
         sender=order,
-        order_id=order.id,
+        order_id=order.order_id,
         amount=data['amount'],
         currency=data['currency'],
     )

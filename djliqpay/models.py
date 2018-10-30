@@ -7,4 +7,4 @@ class LiqPayOrder(models.Model):
     order_id = models.CharField(unique=True, editable=False, max_length=255)
 
     def __str__(self):
-        return 'LiqPay payment (orderId: {})'.format(self.orderId)
+        return 'LiqPay payment (orderId: {})'.format(self.order_id)
