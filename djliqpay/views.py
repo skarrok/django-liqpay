@@ -37,7 +37,7 @@ def liqpay_callback(request):
     data = liqpay.decode_data_from_str(data)
 
     status = data.get('status')
-    if status != 'success':
+    if status not in ('success', 'sandbox'):
         logger.info('Status: {} {} {} {}'.format(status, data.get('err_code'),
                                                  data.get('err_description'),
                                                  data))
@@ -49,7 +49,8 @@ def liqpay_callback(request):
         logger.info('Wrong order_id: {}'.format(data['order_id']))
         return HttpResponse(status=400)
 
-    logger.info('Payment success: id={} amount={} {}'.format(
+    logger.info('Payment status={}: id={} amount={} {}'.format(
+        status,
         order.id,
         data['amount'],
         data['currency']
