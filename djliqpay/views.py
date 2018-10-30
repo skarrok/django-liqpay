@@ -25,9 +25,9 @@ def liqpay_callback(request):
     data = form.cleaned_data['data']
     signature = form.cleaned_data['signature']
 
-    liqpay = LiqPay(settings.PUBLIC_KEY, settings.PRIVATE_KEY)
-    our_sign = liqpay.str_to_sign(settings.PRIVATE_KEY + data +
-                                  settings.PRIVATE_KEY)
+    liqpay = LiqPay(settings.LIQPAY_PUBLIC_KEY, settings.LIQPAY_PRIVATE_KEY)
+    our_sign = liqpay.str_to_sign(settings.LIQPAY_PRIVATE_KEY + data +
+                                  settings.LIQPAY_PRIVATE_KEY)
 
     if signature != our_sign:
         logger.info('Invalid signature: our {}!={}'.format(
