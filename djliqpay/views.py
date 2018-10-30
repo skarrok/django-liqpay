@@ -38,8 +38,9 @@ def liqpay_callback(request):
 
     status = data.get('status')
     if status != 'success':
-        logger.info('Status: {} {} {}'.format(status, data.get('err_code'),
-                                              data.get('err_description')))
+        logger.info('Status: {} {} {} {}'.format(status, data.get('err_code'),
+                                                 data.get('err_description'),
+                                                 data))
         return HttpResponse(status=400)
 
     try:
