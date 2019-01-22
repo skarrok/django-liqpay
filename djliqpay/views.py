@@ -19,7 +19,7 @@ def liqpay_callback(request):
 
     form = CallbackForm(request.POST or None)
     if not form.is_valid():
-        logger.info('Invalid callback form, POST: {}'.format(request.POST))
+        logger.warning('Invalid callback form, POST: {}'.format(request.POST))
         return HttpResponse(status=400)
 
     data = form.cleaned_data['data']
@@ -30,7 +30,7 @@ def liqpay_callback(request):
                                   settings.LIQPAY_PRIVATE_KEY)
 
     if signature != our_sign:
-        logger.info('Invalid signature: our {}!={}'.format(
+        logger.warning('Invalid signature: our {}!={}'.format(
             our_sign, signature))
         return HttpResponse(status=400)
 
@@ -38,15 +38,15 @@ def liqpay_callback(request):
 
     status = data.get('status')
     if status not in ('success', 'sandbox'):
-        logger.info('Status: {} {} {} {}'.format(status, data.get('err_code'),
-                                                 data.get('err_description'),
-                                                 data))
+        logger.warning('Status is not success: {} {} {} {}'.format(status, data.get('err_code'),
+                                                                   data.get('err_description'),
+                                                                   data))
         return HttpResponse(status=400)
 
     try:
         order = LiqPayOrder.objects.get(order_id=data['order_id'])
     except LiqPayOrder.DoesNotExist:
-        logger.info('Wrong order_id: {}'.format(data['order_id']))
+        logger.warning('Wrong order_id: {}'.format(data['order_id']))
         return HttpResponse(status=400)
 
     logger.info('Payment status={}: id={} amount={} {}'.format(
